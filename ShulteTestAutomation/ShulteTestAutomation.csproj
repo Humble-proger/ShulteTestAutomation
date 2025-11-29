@@ -9,10 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\" />
     <Folder Include="Data\" />
     <Folder Include="Resources\" />
-    <Folder Include="Utilities\" />
   </ItemGroup>
 
 </Project>

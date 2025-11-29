@@ -128,6 +128,31 @@ namespace ShulteTestAutomation.Services
 
             if (user != null)
             {
+                // Проверяем, есть ли сессии у этого пользователя
+                var dataService = new DataService();
+                var userSessions = dataService.LoadTestSessionsBySubject(user.SubjectId);
+
+                if (userSessions.Any())
+                {
+                    // Предупреждаем о наличии сессий
+                    var result = MessageBox.Show($"У пользователя есть {userSessions.Count} сессий тестирования. " +
+                                               $"Удалить пользователя и все его сессии?",
+                                               "Подтверждение удаления",
+                                               MessageBoxButton.YesNo,
+                                               MessageBoxImage.Warning);
+
+                    if (result != MessageBoxResult.Yes)
+                    {
+                        return false;
+                    }
+
+                    // Удаляем все сессии пользователя
+                    foreach (var session in userSessions)
+                    {
+                        dataService.DeleteSession(session.SessionId);
+                    }
+                }
+
                 users.Remove(user);
                 SaveUsers(users);
                 return true;

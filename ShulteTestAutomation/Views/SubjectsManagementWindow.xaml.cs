@@ -43,34 +43,54 @@ namespace ShulteTestAutomation.Views
 
                 // Создаем пользователя для испытуемого
                 var userService = new UserService();
-                var username = GenerateUsername(newSubject.Name);
-                var password = GenerateRandomPassword();
+
+                // Генерируем уникальный логин
+                string username = GenerateUniqueUsername(newSubject.Name);
+                string password = GenerateRandomPassword();
 
                 var user = userService.CreateSubjectUser(username, password, newSubject.SubjectId);
                 if (user != null)
                 {
-                    MessageBox.Show($"Создан пользователь для испытуемого:\nЛогин: {username}\nПароль: {password}",
-                                  "Успех",
+                    // Показываем окно с логином и паролем
+                    var credentialsWindow = new CredentialsWindow(username, password, newSubject.Name);
+                    credentialsWindow.Owner = this;
+                    credentialsWindow.ShowDialog();
+                }
+                else
+                {
+                    MessageBox.Show("Ошибка при создании пользователя. Возможно, пользователь с таким логином уже существует.",
+                                  "Ошибка",
                                   MessageBoxButton.OK,
-                                  MessageBoxImage.Information);
+                                  MessageBoxImage.Error);
                 }
 
                 LoadSubjects();
             }
         }
-
-        private string GenerateUsername(string name)
+        private string GenerateUniqueUsername(string name)
         {
-            // Генерация логина на основе имени
             var baseName = name.Replace(" ", ".").ToLower();
-            return $"{baseName}.{DateTime.Now:MMdd}";
+            var random = new Random();
+            string username;
+            var userService = new UserService();
+            var existingUsers = userService.LoadUsers();
+
+            // Пытаемся создать уникальный логин
+            do
+            {
+                string suffix = random.Next(100, 999).ToString();
+                username = $"{baseName}.{suffix}";
+            }
+            while (existingUsers.Any(u => u.Username == username));
+
+            return username;
         }
 
         private string GenerateRandomPassword()
         {
-            const string chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+            const string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             var random = new Random();
-            return new string(Enumerable.Repeat(chars, 6)
+            return new string(Enumerable.Repeat(chars, 8)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 

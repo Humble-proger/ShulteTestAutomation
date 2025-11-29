@@ -45,24 +45,31 @@ namespace ShulteTestAutomation.Views
 
         private void StartNewSession(TestConfiguration configuration = null)
         {
-            // Если переданная конфигурация null, проверяем есть ли индивидуальные настройки у испытуемого
             TestConfiguration finalConfiguration = configuration;
 
-            if (finalConfiguration == null && _currentUser?.Role == UserRole.Subject)
+            // Проверяем индивидуальные настройки испытуемого
+            if (_currentUser?.Role == UserRole.Subject && !string.IsNullOrEmpty(_currentUser.SubjectId))
             {
-                // Загружаем данные испытуемого для проверки индивидуальных настроек
                 var dataService = new DataService();
                 var subjects = dataService.LoadSubjects();
                 var subject = subjects.FirstOrDefault(s => s.SubjectId == _currentUser.SubjectId);
 
                 if (subject?.TestConfiguration != null)
                 {
+                    // Используем индивидуальные настройки испытуемого
                     finalConfiguration = subject.TestConfiguration;
+                    MessageBox.Show($"Используются индивидуальные настройки теста:\n" +
+                                  $"Размер: {finalConfiguration.TableSize}x{finalConfiguration.TableSize}\n" +
+                                  $"Последовательность: {finalConfiguration.SequenceType}\n" +
+                                  $"Перемешивание: {(finalConfiguration.ShuffleAfterEachStep ? "Да" : "Нет")}",
+                                  "Индивидуальные настройки",
+                                  MessageBoxButton.OK,
+                                  MessageBoxImage.Information);
                 }
             }
 
-            // Если все еще null, используем конфигурацию по умолчанию
-            finalConfiguration ??= new TestConfiguration();
+            // Если все еще null, используем переданную конфигурацию или конфигурацию по умолчанию
+            finalConfiguration ??= configuration ?? new TestConfiguration();
 
             _currentSession = new TestSession
             {
