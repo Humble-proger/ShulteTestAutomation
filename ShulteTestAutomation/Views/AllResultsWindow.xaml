@@ -24,6 +24,7 @@
                         Margin="0,0,10,0" Background="#4CAF50" Foreground="White"/>
                 <Button Content="Показать статистику" Click="ShowStatistics_Click" Margin="0,0,10,0"/>
                 <Button Content="Сравнить выбранные" Click="CompareSelected_Click" Margin="0,0,10,0"/>
+                <Button Content="Удалить выбранные" Click="DeleteSelected_Click" Margin="0,0,10,0" Background="Red" Foreground="White"/>
             </StackPanel>
         </StackPanel>
 

@@ -237,25 +237,8 @@ namespace ShulteTestAutomation.Views
             DrawFatigueChart();
         }
 
-        private void SaveResults_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                var dataService = new DataService();
-                dataService.SaveTestSession(_session);
-                MessageBox.Show("Результаты успешно сохранены!", "Успех",
-                              MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка при сохранении: {ex.Message}", "Ошибка",
-                              MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
         private void GoToMain_Click(object sender, RoutedEventArgs e)
         {
-            // Передаем текущего пользователя в MainWindow
             var mainWindow = new MainWindow();
             mainWindow.Show();
             this.Close();

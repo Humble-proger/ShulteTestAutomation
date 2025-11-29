@@ -43,13 +43,32 @@ namespace ShulteTestAutomation.Views
             _testService = new TestSessionService(new DataService());
         }
 
-        private void StartNewSession(TestConfiguration configuration)
+        private void StartNewSession(TestConfiguration configuration = null)
         {
+            // Если переданная конфигурация null, проверяем есть ли индивидуальные настройки у испытуемого
+            TestConfiguration finalConfiguration = configuration;
+
+            if (finalConfiguration == null && _currentUser?.Role == UserRole.Subject)
+            {
+                // Загружаем данные испытуемого для проверки индивидуальных настроек
+                var dataService = new DataService();
+                var subjects = dataService.LoadSubjects();
+                var subject = subjects.FirstOrDefault(s => s.SubjectId == _currentUser.SubjectId);
+
+                if (subject?.TestConfiguration != null)
+                {
+                    finalConfiguration = subject.TestConfiguration;
+                }
+            }
+
+            // Если все еще null, используем конфигурацию по умолчанию
+            finalConfiguration ??= new TestConfiguration();
+
             _currentSession = new TestSession
             {
                 SessionId = Guid.NewGuid().ToString(),
                 StartTime = DateTime.Now,
-                Configuration = configuration ?? new TestConfiguration(),
+                Configuration = finalConfiguration,
                 SubjectId = _currentUser?.SubjectId ?? "anonymous"
             };
 

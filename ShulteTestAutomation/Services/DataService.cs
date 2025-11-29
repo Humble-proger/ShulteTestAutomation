@@ -151,5 +151,13 @@ namespace ShulteTestAutomation.Services
 
             return sessions;
         }
+        public void DeleteSession(string sessionId)
+        {
+            var sessionFile = Path.Combine(_sessionsDirectory, $"{sessionId}.json");
+            if (File.Exists(sessionFile))
+            {
+                File.Delete(sessionFile);
+            }
+        }
     }
 }

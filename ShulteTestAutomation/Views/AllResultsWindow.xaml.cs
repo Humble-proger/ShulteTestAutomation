@@ -63,6 +63,40 @@ namespace ShulteTestAutomation.Views
             LoadAllSessions();
         }
 
+        private void DeleteSelected_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedSessions = AllSessionsListView.SelectedItems.Cast<TestSession>().ToList();
+            if (selectedSessions.Count == 0)
+            {
+                MessageBox.Show("Выберите сессии для удаления", "Информация",
+                              MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var result = MessageBox.Show($"Вы уверены, что хотите удалить {selectedSessions.Count} сессий?",
+                                        "Подтверждение удаления",
+                                        MessageBoxButton.YesNo,
+                                        MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    foreach (var session in selectedSessions)
+                    {
+                        _dataService.DeleteSession(session.SessionId);
+                    }
+                    LoadAllSessions();
+                    MessageBox.Show("Сессии удалены", "Успех",
+                                  MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при удалении: {ex.Message}", "Ошибка",
+                                  MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
         private void ExportToCsv_Click(object sender, RoutedEventArgs e)
         {
             try

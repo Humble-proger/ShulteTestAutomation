@@ -11,6 +11,7 @@ namespace ShulteTestAutomation.Models
         public string Gender { get; set; }
         public DateTime RegistrationDate { get; set; }
         public string Notes { get; set; }
+        public TestConfiguration TestConfiguration { get; set; }
 
         public List<TestSession> TestSessions { get; set; } = new List<TestSession>();
     }

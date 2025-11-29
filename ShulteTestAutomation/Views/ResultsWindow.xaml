@@ -71,7 +71,7 @@
 
         <!-- Кнопки -->
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
-            <Button Content="Сохранить результаты" Click="SaveResults_Click" Margin="5"/>
+            <!-- Убрали кнопку "Сохранить результаты" -->
             <Button Content="В главное меню" Click="GoToMain_Click" Margin="5"/>
             <Button Content="Показать историю" Click="ShowHistory_Click" Margin="5"/>
         </StackPanel>

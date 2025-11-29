@@ -10,25 +10,35 @@ namespace ShulteTestAutomation.Services
         {
             var csvBuilder = new StringBuilder();
 
-            // Заголовок CSV
-            csvBuilder.AppendLine("Дата;Испытуемый;Возраст;Размер таблицы;Последовательность;ER;BP;IN;Общее время;Ошибки;Время таблицы 1;Время таблицы 2;Время таблицы 3;Время таблицы 4;Время таблицы 5;Ошибки таблицы 1;Ошибки таблицы 2;Ошибки таблицы 3;Ошибки таблицы 4;Ошибки таблицы 5");
+            // Заголовок CSV с дополнительными полями
+            csvBuilder.AppendLine("Дата;Испытуемый;ID испытуемого;Возраст;Размер таблицы;Последовательность;ER;BP;IN;Общее время;Ошибки;Время таблицы 1;Время таблицы 2;Время таблицы 3;Время таблицы 4;Время таблицы 5;Ошибки таблицы 1;Ошибки таблицы 2;Ошибки таблицы 3;Ошибки таблицы 4;Ошибки таблицы 5");
+
+            // Получаем всех испытуемых для заполнения имен и возраста
+            var dataService = new DataService();
+            var subjects = dataService.LoadSubjects();
 
             // Данные
             foreach (var session in sessions)
             {
+                // Находим испытуемого для этой сессии
+                var subject = subjects.FirstOrDefault(s => s.SubjectId == session.SubjectId);
+                string subjectName = subject?.Name ?? "Неизвестный";
+                string subjectAge = subject?.Age > 0 ? subject.Age.ToString() : "Не указан";
+
                 var line = new List<string>
-                {
-                    session.StartTime.ToString("dd.MM.yyyy HH:mm"),
-                    EscapeCsvField(session.SubjectName ?? "Неизвестный"),
-                    session.SubjectAge ?? "Не указан",
-                    session.Configuration.TableSize.ToString(),
-                    session.Configuration.SequenceType.ToString(),
-                    session.Results?.EfficiencyRate.ToString("F2") ?? "0",
-                    session.Results?.WorkabilityIndex.ToString("F2") ?? "0",
-                    session.Results?.StabilityIndex.ToString("F2") ?? "0",
-                    session.Results?.TotalTime.ToString("F2") ?? "0",
-                    session.Results?.TotalErrors.ToString() ?? "0"
-                };
+        {
+            session.StartTime.ToString("dd.MM.yyyy HH:mm"),
+            EscapeCsvField(subjectName),
+            session.SubjectId,
+            subjectAge,
+            session.Configuration.TableSize.ToString(),
+            session.Configuration.SequenceType.ToString(),
+            session.Results?.EfficiencyRate.ToString("F2") ?? "0",
+            session.Results?.WorkabilityIndex.ToString("F2") ?? "0",
+            session.Results?.StabilityIndex.ToString("F2") ?? "0",
+            session.Results?.TotalTime.ToString("F2") ?? "0",
+            session.Results?.TotalErrors.ToString() ?? "0"
+        };
 
                 // Время по таблицам
                 for (int i = 0; i < 5; i++)
