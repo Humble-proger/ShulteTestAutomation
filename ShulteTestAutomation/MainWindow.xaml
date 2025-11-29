@@ -1,0 +1,73 @@
+﻿<Window x:Class="ShulteTestAutomation.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Автоматизация методики Шульте" 
+        Height="600" Width="800"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="Margin" Value="10"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок и информация о пользователе -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="20,10">
+            <TextBlock Text="Автоматизация методики Шульте" 
+                       FontSize="24" FontWeight="Bold"/>
+            <TextBlock x:Name="UserInfoText" Margin="20,0,0,0" FontSize="14" 
+                       VerticalAlignment="Center" Foreground="Gray" Text="Не авторизован"/>
+            <Button x:Name="LogoutButton" Content="Выйти" Click="Logout_Click" 
+                    Margin="20,0,0,0" Padding="10,5" FontSize="12"
+                    Visibility="Collapsed"/>
+        </StackPanel>
+
+        <!-- Основной контент -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="20">
+            <StackPanel>
+                <TextBlock Text="Методика Шульте" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
+                <TextBlock TextWrapping="Wrap" Margin="0,0,0,20">
+                    Методика Шульте предназначена для исследования устойчивости внимания, 
+                    скорости ориентировочно-поисковых движений взора, эффективности работы.
+                </TextBlock>
+
+                <TextBlock Text="Инструкция:" FontWeight="Bold" Margin="0,10,0,5"/>
+                <TextBlock TextWrapping="Wrap" Margin="0,0,0,20">
+                    • Вам будет представлено 5 таблиц с числами от 1 до N²
+                    • Нажимайте на числа в порядке возрастания (1, 2, 3, ... N²)
+                    • Старайтесь работать как можно быстрее и без ошибок
+                    • После каждой таблицы вы увидите промежуточные результаты
+                </TextBlock>
+
+                <TextBlock Text="Рассчитываемые показатели:" FontWeight="Bold" Margin="0,10,0,5"/>
+                <TextBlock Text="• ER (Эффективность работы) - среднее время работы с одной таблицей" Margin="5"/>
+                <TextBlock Text="• BP (Врабатываемость) - показатель скорости сосредоточения" Margin="5"/>
+                <TextBlock Text="• IN (Психическая устойчивость) - устойчивость внимания к утомлению" Margin="5"/>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Кнопки действий -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
+            <Button x:Name="StartTestButton" Content="Начать тестирование" Click="StartTest_Click" Background="#4CAF50" Foreground="White"/>
+            <Button x:Name="HistoryButton" Content="История результатов" Click="ShowHistory_Click"/>
+            <Button x:Name="SettingsButton" Content="Настройки теста" Click="ShowSettings_Click"/>
+        </StackPanel>
+
+        <!-- Кнопки для исследователя -->
+        <StackPanel Grid.Row="3" x:Name="ResearcherPanel" Orientation="Horizontal" 
+                    HorizontalAlignment="Center" Margin="20" Visibility="Collapsed">
+            <Button Content="Управление испытуемыми" Click="ManageSubjects_Click" Background="#2196F3" Foreground="White"/>
+            <Button Content="Все результаты" Click="ShowAllResults_Click" Margin="10,0,0,0"/>
+        </StackPanel>
+    </Grid>
+</Window>

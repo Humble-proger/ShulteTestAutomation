@@ -1,0 +1,45 @@
+﻿<Window x:Class="ShulteTestAutomation.Views.HistoryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="История результатов" 
+        Height="500" Width="700"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок и фильтры -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBlock Text="История тестирований" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+            <Button Content="Обновить" Click="Refresh_Click" Margin="10,0,0,0"/>
+            <Button Content="Экспорт в CSV" Click="ExportToCsv_Click" Margin="5" Background="#4CAF50" Foreground="White"/>
+        </StackPanel>
+
+        <!-- Список сессий -->
+        <ListView Grid.Row="1" x:Name="SessionsListView" SelectionChanged="SessionsListView_SelectionChanged">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Дата" Width="120" DisplayMemberBinding="{Binding StartTime, StringFormat={}{0:dd.MM.yyyy HH:mm}}"/>
+                    <GridViewColumn Header="ER" Width="80" DisplayMemberBinding="{Binding Results.EfficiencyRate, StringFormat={}{0:F2}}"/>
+                    <GridViewColumn Header="BP" Width="80" DisplayMemberBinding="{Binding Results.WorkabilityIndex, StringFormat={}{0:F2}}"/>
+                    <GridViewColumn Header="IN" Width="80" DisplayMemberBinding="{Binding Results.StabilityIndex, StringFormat={}{0:F2}}"/>
+                    <GridViewColumn Header="Ошибки" Width="80" DisplayMemberBinding="{Binding Results.TotalErrors}"/>
+                    <GridViewColumn Header="Общее время" Width="100" DisplayMemberBinding="{Binding Results.TotalTime, StringFormat={}{0:F2} сек.}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <!-- Детали выбранной сессии -->
+        <GroupBox Grid.Row="2" Header="Детали выбранной сессии" Margin="0,10,0,0">
+            <ScrollViewer MaxHeight="150" VerticalScrollBarVisibility="Auto">
+                <StackPanel x:Name="SessionDetailsPanel">
+                    <TextBlock Text="Выберите сессию для просмотра деталей" FontStyle="Italic"/>
+                </StackPanel>
+            </ScrollViewer>
+        </GroupBox>
+    </Grid>
+</Window>

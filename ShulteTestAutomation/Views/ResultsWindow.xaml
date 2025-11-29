@@ -1,0 +1,79 @@
+﻿<Window x:Class="ShulteTestAutomation.Views.ResultsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Результаты тестирования" 
+        Height="700" Width="900"
+        WindowStartupLocation="CenterScreen"
+        SizeChanged="Window_SizeChanged">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок -->
+        <TextBlock Grid.Row="0" Text="Результаты тестирования по методике Шульте" 
+                   FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+        <!-- Основные результаты -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!-- Время по таблицам -->
+                <GroupBox Header="Время по таблицам" Margin="0,0,0,10">
+                    <ItemsControl x:Name="TableTimesItems" Margin="10">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" Margin="2"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </GroupBox>
+
+                <!-- Ошибки по таблицам -->
+                <GroupBox Header="Ошибки по таблицам" Margin="0,0,0,10">
+                    <ItemsControl x:Name="ErrorCountsItems" Margin="10">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" Margin="2"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </GroupBox>
+
+                <!-- Расчетные показатели -->
+                <GroupBox Header="Расчетные показатели" Margin="0,0,0,10">
+                    <StackPanel Margin="10">
+                        <TextBlock x:Name="EfficiencyText" Margin="5"/>
+                        <TextBlock x:Name="WorkabilityText" Margin="5"/>
+                        <TextBlock x:Name="StabilityText" Margin="5"/>
+                        <TextBlock x:Name="InterpretationText" Margin="5,10,5,5" TextWrapping="Wrap" FontStyle="Italic"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- График утомляемости -->
+                <GroupBox Header="График утомляемости" Margin="0,0,0,10">
+                    <Grid Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Canvas x:Name="FatigueChart" Grid.Row="0" Height="250" Background="White"
+                                SizeChanged="FatigueChart_SizeChanged"/>
+
+                        <TextBlock Grid.Row="1" Text="Таблицы" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                    </Grid>
+                </GroupBox>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Кнопки -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+            <Button Content="Сохранить результаты" Click="SaveResults_Click" Margin="5"/>
+            <Button Content="В главное меню" Click="GoToMain_Click" Margin="5"/>
+            <Button Content="Показать историю" Click="ShowHistory_Click" Margin="5"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,68 @@
+﻿<Window x:Class="ShulteTestAutomation.Views.AllResultsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Все результаты тестирования" 
+        Height="700" Width="1000"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок и фильтры -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,10">
+            <TextBlock Text="Все результаты тестирования" 
+                       FontSize="18" FontWeight="Bold" 
+                       HorizontalAlignment="Center" Margin="0,0,0,10"/>
+
+            <StackPanel Orientation="Horizontal">
+                <Button Content="Обновить" Click="Refresh_Click" Margin="0,0,10,0"/>
+                <Button Content="Экспорт в CSV" Click="ExportToCsv_Click" 
+                        Margin="0,0,10,0" Background="#4CAF50" Foreground="White"/>
+                <Button Content="Показать статистику" Click="ShowStatistics_Click" Margin="0,0,10,0"/>
+                <Button Content="Сравнить выбранные" Click="CompareSelected_Click" Margin="0,0,10,0"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Список всех сессий -->
+        <ListView Grid.Row="1" x:Name="AllSessionsListView" SelectionMode="Extended">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Дата" Width="120" 
+                                    DisplayMemberBinding="{Binding StartTime, StringFormat={}{0:dd.MM.yyyy HH:mm}}"/>
+                    <GridViewColumn Header="Испытуемый" Width="150" 
+                                    DisplayMemberBinding="{Binding SubjectName}"/>
+                    <GridViewColumn Header="Возраст" Width="60" 
+                                    DisplayMemberBinding="{Binding SubjectAge}"/>
+                    <GridViewColumn Header="Размер" Width="60" 
+                                    DisplayMemberBinding="{Binding Configuration.TableSize}"/>
+                    <GridViewColumn Header="Последовательность" Width="120" 
+                                    DisplayMemberBinding="{Binding Configuration.SequenceType}"/>
+                    <GridViewColumn Header="ER" Width="70" 
+                                    DisplayMemberBinding="{Binding Results.EfficiencyRate, StringFormat={}{0:F2}}"/>
+                    <GridViewColumn Header="BP" Width="70" 
+                                    DisplayMemberBinding="{Binding Results.WorkabilityIndex, StringFormat={}{0:F2}}"/>
+                    <GridViewColumn Header="IN" Width="70" 
+                                    DisplayMemberBinding="{Binding Results.StabilityIndex, StringFormat={}{0:F2}}"/>
+                    <GridViewColumn Header="Ошибки" Width="70" 
+                                    DisplayMemberBinding="{Binding Results.TotalErrors}"/>
+                    <GridViewColumn Header="Общее время" Width="100" 
+                                    DisplayMemberBinding="{Binding Results.TotalTime, StringFormat={}{0:F2} сек.}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <!-- Статистика -->
+        <GroupBox Grid.Row="2" Header="Статистика" Margin="0,10,0,0">
+            <ScrollViewer MaxHeight="150" VerticalScrollBarVisibility="Auto">
+                <StackPanel x:Name="StatisticsPanel">
+                    <TextBlock Text="Выберите сессии для просмотра статистики или нажмите 'Показать статистику' для общей статистики" 
+                               FontStyle="Italic" TextWrapping="Wrap"/>
+                </StackPanel>
+            </ScrollViewer>
+        </GroupBox>
+    </Grid>
+</Window>

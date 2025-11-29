@@ -1,0 +1,47 @@
+﻿<Window x:Class="ShulteTestAutomation.Views.SubjectsManagementWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Управление испытуемыми" 
+        Height="500" Width="700"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок и кнопки -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBlock Text="Управление испытуемыми" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+            <Button Content="Добавить" Click="AddSubject_Click" Margin="10,0,5,0" Background="#4CAF50" Foreground="White"/>
+            <Button Content="Редактировать" Click="EditSubject_Click" Margin="5"/>
+            <Button Content="Удалить" Click="DeleteSubject_Click" Margin="5" Background="Red" Foreground="White"/>
+            <Button Content="Обновить" Click="Refresh_Click" Margin="5,0,0,0"/>
+        </StackPanel>
+
+        <!-- Список испытуемых -->
+        <ListView Grid.Row="1" x:Name="SubjectsListView" SelectionChanged="SubjectsListView_SelectionChanged">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding SubjectId}"/>
+                    <GridViewColumn Header="ФИО" Width="200" DisplayMemberBinding="{Binding Name}"/>
+                    <GridViewColumn Header="Возраст" Width="80" DisplayMemberBinding="{Binding Age}"/>
+                    <GridViewColumn Header="Пол" Width="80" DisplayMemberBinding="{Binding Gender}"/>
+                    <GridViewColumn Header="Дата регистрации" Width="120" DisplayMemberBinding="{Binding RegistrationDate, StringFormat={}{0:dd.MM.yyyy}}"/>
+                    <GridViewColumn Header="Кол-во тестов" Width="100" DisplayMemberBinding="{Binding TestSessions.Count}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <!-- Детали выбранного испытуемого -->
+        <GroupBox Grid.Row="2" Header="Детали выбранного испытуемого" Margin="0,10,0,0">
+            <ScrollViewer MaxHeight="120" VerticalScrollBarVisibility="Auto">
+                <StackPanel x:Name="SubjectDetailsPanel">
+                    <TextBlock Text="Выберите испытуемого для просмотра деталей" FontStyle="Italic"/>
+                </StackPanel>
+            </ScrollViewer>
+        </GroupBox>
+    </Grid>
+</Window>
